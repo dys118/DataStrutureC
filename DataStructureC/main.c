@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "Vector.h"
 #include "LinkedList.h"
+#include "ArrayStack.h"
+#include "ListStack.h"
 
 int IsOdd(short s)
 {
@@ -10,6 +12,44 @@ int IsOdd(short s)
 void Print(short s)
 {
 	printf("%d\n", s);
+}
+
+void TestListStack()
+{
+	ListStack* stack = LS_Create();
+
+	LS_Push(stack, 3);
+	LS_Push(stack, 5);
+	LS_Push(stack, 1);
+	LS_Push(stack, 2);
+
+	printf("count : %d\n", LS_Count(stack));
+
+	printf("pop : %d\n", LS_Pop(stack));
+	printf("pop : %d\n", LS_Pop(stack));
+	printf("pop : %d\n", LS_Pop(stack));
+	printf("pop : %d\n", LS_Pop(stack));
+
+	LS_Destroy(stack);
+}
+
+void TestArrayStack()
+{
+	ArrayStack* stack = AS_Create();
+
+	AS_Push(stack, 3);
+	AS_Push(stack, 5);
+	AS_Push(stack, 1);
+	AS_Push(stack, 2);
+
+	printf("count : %d\n", AS_Count(stack));
+
+	printf("pop : %d\n", AS_Pop(stack));
+	printf("pop : %d\n", AS_Pop(stack));
+	printf("pop : %d\n", AS_Pop(stack));
+	printf("pop : %d\n", AS_Pop(stack));
+
+	AS_Destroy(stack);
 }
 
 // TDD (Test-Driven Development) 테스트 주도 개발방법론
@@ -53,10 +93,6 @@ void TestLinkedList()
 	printf("%d\n", LL_RemoveBack(list));
 	printf("%d\n", LL_RemoveBack(list));
 
-	return 0;
-
-
-
 	LL_Iterate(list, Print);
 
 	LL_Remove(list, 5);
@@ -75,7 +111,9 @@ void TestLinkedList()
 int main()
 {
 	//TestVector();
-	TestLinkedList();
+	//TestLinkedList();
+	//TestArrayStack();
+	TestListStack();
 
 	return 0;
 }

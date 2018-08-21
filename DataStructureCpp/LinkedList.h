@@ -1,12 +1,8 @@
 #pragma once
-#pragma once
+#include "main.h"
 
-#define TRUE 1
-#define FALSE 0
-
-class Node
+struct Node
 {
-public:
 	short Value;
 	Node* Previous;
 	Node* Next;
@@ -15,21 +11,23 @@ public:
 class LinkedList
 {
 private:
-	Node* Head;
-	Node* Tail;
+	Node* _head;
+	Node* _tail;
+	short RemoveCore(Node* node);
+	Node* Find_Node(short value);
 
 public:
-	LinkedList* LL_Create();
-	void LL_Add(short value);
-	void LL_AddFront(short value);
-	void LL_AddBack(short value);
-	void LL_Remove(short value);
-	short LL_RemoveFront();
-	short LL_RemoveBack();
-	void LL_Iterate(void(*pf)(short));
-	int LL_Contains(short value);
-	int LL_Count();
-	int LL_CountIf(int(*fp)(short));
-	void LL_Destroy();
-	Node* LL_Find_Node(short value);
-};
+	LinkedList();
+	~LinkedList();
+	void Add(short value);
+	void AddFront(short value);
+	void AddBack(short value);
+	void Iterate(void(*pf)(short));
+	void Remove(short value);
+	short RemoveFront();
+	short RemoveBack();
+	boolean Contains(short value);
+	int Count();
+	int Count(boolean(*fp)(short));
+} ;
+

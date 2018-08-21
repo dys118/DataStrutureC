@@ -70,7 +70,7 @@ short LL_RemoveFront(LinkedList* list)
 	Node* node = list->Head->Next;
 
 	if (node == list->Tail)
-		return;
+		return 0;
 
 	return LL_RemoveCore(list, node);
 }
@@ -80,7 +80,7 @@ short LL_RemoveBack(LinkedList* list)
 	Node* node = list->Tail->Previous;
 
 	if (node == list->Head)
-		return;
+		return 0;
 
 	return LL_RemoveCore(list, node);
 }

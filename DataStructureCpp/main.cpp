@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Vector.h"
+#include "LinkedList.h"
 
 int IsOdd(short s)
 {
@@ -46,14 +47,32 @@ void TestVector()
 
 void TestLinkedList()
 {
+	LinkedList* list = new LinkedList;
 
+	list->AddFront(3);
+	list->AddFront(5);
+	list->AddFront(1);
+	list->AddFront(2);
 
+	list->Iterate(Print);
+
+	list->Remove(5);
+
+	list->Iterate(Print);
+
+	printf("contains 3 : %d\n", list->Contains(3));
+	printf("contains 4 : %d\n", list->Contains(4));
+
+	printf("count of all : %d\n", list->Count());
+	printf("count if : %d\n", list->Count(IsOdd));
+
+	delete list;
 }
 
 int main()
 {
-	TestVector();
-	//TestLinkedList();
+	//TestVector();
+	TestLinkedList();
 
 	return 0;
 }

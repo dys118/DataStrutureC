@@ -1,84 +1,96 @@
 #include "LinkedList.h"
 #include <stdlib.h>
 
-LinkedList* LinkedList::LL_Create()
+LinkedList::LinkedList()
 {
+	_head = new Node;
+	_tail = new Node;
 
-	Head = new Node;
-	Tail = new Node;
-
-	Head->Next = Tail;
-	Tail->Previous = Head;
-
-	return 0;
+	_head->Next = _tail;
+	_tail->Previous = _head;
 }
 
-void LinkedList::LL_Add(short value)
+LinkedList::~LinkedList()
 {
-	LL_AddBack(value);
+	delete _head;
+	delete _tail;
+}
+void LinkedList::Add(short value)
+{
+	AddBack(value);
 }
 
-void LinkedList::LL_AddFront(short value)
-{
-	Node *node = new Node;
-	node->Value = value;
-
-	node->Previous = Head;
-	node->Next = Head->Next;
-
-	Head->Next->Previous = node;
-	Head->Next = node;
-}
-
-void LinkedList::LL_AddBack(short value)
+void LinkedList::AddFront(short value)
 {
 	Node* node = new Node;
 	node->Value = value;
 
-	node->Next = Tail;
-	node->Previous = Tail->Previous;
+	node->Previous = _head;
+	node->Next = _head->Next;
 
-	Tail->Previous->Next = node;
-	Tail->Previous = node;
+	_head->Next->Previous = node;
+	_head->Next = node;
 }
 
-
-
-void LinkedList::LL_Remove(short value)
+void LinkedList::AddBack(short value)
 {
-	Node* node = LL_Find_Node(value);
+	Node* node = new Node;
+	node->Value = value;
 
-	if (node == Tail)
+	node->Next = _tail;
+	node->Previous = _tail->Previous;
+
+	_tail->Previous->Next = node;
+	_tail->Previous = node;
+}
+
+short LinkedList::RemoveCore(Node* node)
+{
+	node->Previous->Next = node->Next;
+	node->Next->Previous = node->Previous;
+
+	short value = node->Value;
+
+	delete node;
+
+	return value;
+}
+
+void LinkedList::Remove(short value)
+{
+	Node* node = Find_Node(value);
+
+	if (node == _tail)
 		return;
 
-
+	RemoveCore(node);
 }
 
-short LinkedList::LL_RemoveFront()
+short LinkedList::RemoveFront()
 {
-	Node* node = Head->Next;
+	Node* node = _head->Next;
 
-	if (node == Tail)
+	if (node == _tail)
 		return 0;
 
-
+	return RemoveCore(node);
 }
 
-short LinkedList::LL_RemoveBack()
+short LinkedList::RemoveBack()
 {
-	Node* node = Tail->Previous;
+	Node* node = _tail->Previous;
 
-	if (node == Head)
+	if (node == _head)
 		return 0;
 
-
+	return RemoveCore(node);
 }
 
-void LinkedList::LL_Iterate(void(*pf)(short))
+void LinkedList::Iterate(void(*pf)(short))
 {
-	Node* node = Head->Next;
+	Node* node = _head->Next;
 
-	while (node != Tail)
+	while (node != _tail)
 	{
 		pf(node->Value);
 
@@ -86,20 +98,20 @@ void LinkedList::LL_Iterate(void(*pf)(short))
 	}
 }
 
-int LinkedList::LL_Contains(short value)
+boolean LinkedList::Contains(short value)
 {
-	Node* node = LL_Find_Node(value);
+	Node* node = Find_Node(value);
 
-	return node == Tail ? FALSE : TRUE;
+	return node == _tail ? FALSE : TRUE;
 }
 
-int LinkedList::LL_Count()
+int LinkedList::Count()
 {
 	int count = 0;
 
-	Node* node = Head->Next;
+	Node* node = _head->Next;
 
-	while (node != Tail)
+	while (node != _tail)
 	{
 		count++;
 
@@ -109,13 +121,13 @@ int LinkedList::LL_Count()
 	return count;
 }
 
-int LinkedList::LL_CountIf(int (*fp)(short))
+int LinkedList::Count(boolean(*fp)(short))
 {
 	int count = 0;
 
-	Node* node = Head->Next;
+	Node* node = _head->Next;
 
-	while (node != Tail)
+	while (node != _tail)
 	{
 		if (fp(node->Value) == TRUE)
 			count++;
@@ -126,18 +138,11 @@ int LinkedList::LL_CountIf(int (*fp)(short))
 	return count;
 }
 
-void LinkedList::LL_Destroy()
+Node* LinkedList::Find_Node(short value)
 {
-	free(Head);
-	free(Tail);
-	
-}
+	Node* current = _head->Next;
 
-Node* LinkedList::LL_Find_Node(short value)
-{
-	Node* current = Head->Next;
-
-	while (current != Tail)
+	while (current != _tail)
 	{
 		if (current->Value == value)
 			return current;
@@ -145,5 +150,5 @@ Node* LinkedList::LL_Find_Node(short value)
 		current = current->Next;
 	}
 
-	return Tail;
+	return _tail;
 }
